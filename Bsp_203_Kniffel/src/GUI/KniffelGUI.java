@@ -7,6 +7,7 @@ import BL.MyInteger;
 import Dice.DiceTableModel;
 import Dice.DiceTableRenderer;
 import java.util.Random;
+import javax.swing.JOptionPane;
 
 public class KniffelGUI extends javax.swing.JFrame {
 
@@ -14,6 +15,7 @@ public class KniffelGUI extends javax.swing.JFrame {
     private DiceTableModel diceModel = new DiceTableModel();
     private KniffelTableRenderer rend = new KniffelTableRenderer();
     private DiceTableRenderer diceRend = new DiceTableRenderer();
+    private int count = 0;
     private Random rand = new Random();
 
     public KniffelGUI() {
@@ -35,11 +37,11 @@ public class KniffelGUI extends javax.swing.JFrame {
         model.add(new KniffelEntry("Große Straße", false, 40));
         model.add(new KniffelEntry("Kniffel", false, 50));
 
-        diceModel.add(new MyInteger(rand.nextInt(6),false));
-        diceModel.add(new MyInteger(rand.nextInt(6),false));
-        diceModel.add(new MyInteger(rand.nextInt(6),false));
-        diceModel.add(new MyInteger(rand.nextInt(6),false));
-        diceModel.add(new MyInteger(rand.nextInt(6),false));
+        diceModel.add(new MyInteger(rand.nextInt(6), false));
+        diceModel.add(new MyInteger(rand.nextInt(6), false));
+        diceModel.add(new MyInteger(rand.nextInt(6), false));
+        diceModel.add(new MyInteger(rand.nextInt(6), false));
+        diceModel.add(new MyInteger(rand.nextInt(6), false));
 
         jtDice.setModel(diceModel);
         jtDice.setDefaultRenderer(Object.class, diceRend);
@@ -207,13 +209,18 @@ public class KniffelGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jtDiceMouseClicked
 
     private void btRollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRollActionPerformed
-           for(int i = 4; i >= 0; i--){
-            if(!diceModel.getDice().get(i).isSelected()){
-                diceModel.delete(i);
-                diceModel.getDice().add(i,new MyInteger(rand.nextInt(6),false));
+        if (count < 3) {
+            for (int i = 4; i >= 0; i--) {
+                if (!diceModel.getDice().get(i).isSelected()) {
+                    diceModel.delete(i);
+                    diceModel.getDice().add(i, new MyInteger(rand.nextInt(6), false));
+                }
             }
+            diceModel.fireTableDataChanged();
+        }else{
+            JOptionPane.showMessageDialog(null, "Du hast schon 3 Mal gewürfelt!");
         }
-           diceModel.fireTableDataChanged();
+        count ++;
     }//GEN-LAST:event_btRollActionPerformed
 
     public static void main(String args[]) {
