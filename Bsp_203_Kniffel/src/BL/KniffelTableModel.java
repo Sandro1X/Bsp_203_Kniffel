@@ -10,7 +10,7 @@ public class KniffelTableModel extends AbstractTableModel{
     
     public void add (KniffelEntry e){
         entries.add(e);
-        fireTableRowsInserted(0, entries.size() - 1);
+        fireTableRowsInserted(entries.size() - 1, entries.size() - 1);
     }
     
     public void selectCb(int i){
@@ -18,7 +18,8 @@ public class KniffelTableModel extends AbstractTableModel{
             entries.get(i).setSelected(false);
         }else{
             entries.get(i).setSelected(true);
-        } //TODO
+        }
+        fireTableStructureChanged();
     }
     
     @Override

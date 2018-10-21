@@ -18,6 +18,7 @@ public class KniffelTableRenderer implements TableCellRenderer{
         cb.setVisible(true);
         label.setOpaque(true);
         
+        label.setBackground(Color.white);
         switch(column){
             case 0:  label.setText(e.getName());break;
             case 1: 
