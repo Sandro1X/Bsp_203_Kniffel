@@ -21,6 +21,10 @@ public class KniffelTableModel extends AbstractTableModel{
         }
         fireTableStructureChanged();
     }
+
+    public ArrayList<KniffelEntry> getEntries() {
+        return entries;
+    }
     
     @Override
     public int getRowCount() {

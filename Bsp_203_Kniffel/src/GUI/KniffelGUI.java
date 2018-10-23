@@ -17,6 +17,10 @@ public class KniffelGUI extends javax.swing.JFrame {
     private DiceTableRenderer diceRend = new DiceTableRenderer();
     private int count = 0;
     private Random rand = new Random();
+    private int idx;
+    private boolean rolled;
+    private int amount;
+    private int amount2;
 
     public KniffelGUI() {
         initComponents();
@@ -201,7 +205,25 @@ public class KniffelGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtCardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCardMouseClicked
-        model.selectCb(jtCard.getSelectedRow());
+        if (rolled) {
+            model.selectCb(jtCard.getSelectedRow());
+            idx = jtCard.getSelectedRow();
+            
+            for(KniffelEntry e : model.getEntries()){
+            if(e.isSelected()){
+                amount2 ++;
+            }
+        }
+            if(amount2 == amount + 1){
+                count = 0;
+            }else{
+                JOptionPane.showMessageDialog(null, "Bitte wähle eine weiter Box aus!");
+            }
+        }
+        else if(count == 3){
+            rolled = true;
+            count = 0;
+        }
     }//GEN-LAST:event_jtCardMouseClicked
 
     private void jtDiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDiceMouseClicked
@@ -217,10 +239,20 @@ public class KniffelGUI extends javax.swing.JFrame {
                 }
             }
             diceModel.fireTableDataChanged();
-        }else{
+            count ++;
+        } else {
+            rolled = false;
             JOptionPane.showMessageDialog(null, "Du hast schon 3 Mal gewürfelt!");
         }
-        count ++;
+        if(count == 3){
+            rolled = true;
+        }
+        amount = 0;
+        for(KniffelEntry e : model.getEntries()){
+            if(e.isSelected()){
+                amount ++;
+            }
+        }
     }//GEN-LAST:event_btRollActionPerformed
 
     public static void main(String args[]) {

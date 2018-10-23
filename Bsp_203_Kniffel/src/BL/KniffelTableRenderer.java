@@ -9,7 +9,7 @@ import javax.swing.table.TableCellRenderer;
 
 
 public class KniffelTableRenderer implements TableCellRenderer{
-
+    
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel label = new JLabel();
@@ -24,7 +24,7 @@ public class KniffelTableRenderer implements TableCellRenderer{
             case 1: 
                 cb.setSelected(e.isSelected());
                 return cb;
-            case 2: label.setText("0");
+            case 2: label.setText(e.getPoints()+"");
         }
         return label;
     }
