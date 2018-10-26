@@ -2,17 +2,26 @@ package BL;
 
 public class KniffelValue {
 
-    private int value;
+    private int[] rolledValues = new int [5];
 
-    public KniffelValue(int value) {
-        this.value = value;
+    public KniffelValue() {
     }
 
-    public int getValue() {
-        return value;
+    public int[] getRolledValues() {
+        return rolledValues;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setRolledValues(int[] rolledValues) {
+        this.rolledValues = rolledValues;
+    }
+    
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0; i < rolledValues.length;i++){
+            sb.append(rolledValues[i]+"");
+        }
+        return sb.toString(); //TODO
     }
 }

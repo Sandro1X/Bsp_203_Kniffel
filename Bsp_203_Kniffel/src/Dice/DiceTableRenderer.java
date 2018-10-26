@@ -1,5 +1,6 @@
 package Dice;
 
+import BL.KniffelValue;
 import BL.MyInteger;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,6 +17,17 @@ public class DiceTableRenderer implements TableCellRenderer {
         new ImageIcon("src\\res\\Alea_5.png"),new ImageIcon("src\\res\\Alea_6.png")};
     private DiceTableModel model = new DiceTableModel();
     private MyInteger mj = new MyInteger(0,false);
+    private KniffelValue values = new KniffelValue();
+    private int[] rolledValues = new int[5];
+    private int count = 0;
+    
+    public int[] getValues(){
+        return values.getRolledValues();
+    }
+    
+    public KniffelValue getValue(){
+        return values;
+    }
     
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -25,13 +37,20 @@ public class DiceTableRenderer implements TableCellRenderer {
         if(value instanceof MyInteger){
             mj = (MyInteger) value;
         }
+        if(count == 5){
+            count = 0;
+        }
         MyInteger mi = new MyInteger(mj.getValue(),false);
+        rolledValues[count] = mi.getValue()+1; //TODO
         label.setIcon(icons[mi.getValue()]);
         if(mj.isSelected()){
             label.setBackground(Color.red);
         }else{
             label.setBackground(Color.white);
         }
+        
+        count++;
+        values.setRolledValues(rolledValues);
         return label;
     }
 }

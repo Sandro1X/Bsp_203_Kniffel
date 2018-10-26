@@ -6,8 +6,12 @@ import BL.KniffelTableRenderer;
 import BL.MyInteger;
 import Dice.DiceTableModel;
 import Dice.DiceTableRenderer;
+import java.awt.Color;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class KniffelGUI extends javax.swing.JFrame {
 
@@ -18,27 +22,27 @@ public class KniffelGUI extends javax.swing.JFrame {
     private int count = 0;
     private Random rand = new Random();
     private int idx;
-    private boolean rolled;
-    private int amount;
-    private int amount2;
 
     public KniffelGUI() {
         initComponents();
         jtCard.setModel(model);
         jtCard.setDefaultRenderer(Object.class, rend);
         jtCard.setShowGrid(true);
-
-        model.add(new KniffelEntry("Nur Einser", false, 1));
-        model.add(new KniffelEntry("Nur Zweier", false, 2));
-        model.add(new KniffelEntry("Nur Dreier", false, 3));
-        model.add(new KniffelEntry("Nur Vierer", false, 4));
-        model.add(new KniffelEntry("Nur Fünfer", false, 5));
-        model.add(new KniffelEntry("Nur Sechser", false, 6));
-        model.add(new KniffelEntry("Pasch 3", false, 0));
-        model.add(new KniffelEntry("Pasch 4", false, 0));
-        model.add(new KniffelEntry("Full House", false, 25));
-        model.add(new KniffelEntry("Kleine Straße", false, 30));
-        model.add(new KniffelEntry("Große Straße", false, 40));
+        
+        btRoll.setBackground(Color.black);
+        btRoll.setForeground(Color.white);
+        
+        model.add(new KniffelEntry("Nur Einser", false, 1));//Done
+        model.add(new KniffelEntry("Nur Zweier", false, 2));//Done
+        model.add(new KniffelEntry("Nur Dreier", false, 3));//Done
+        model.add(new KniffelEntry("Nur Vierer", false, 4));//Done
+        model.add(new KniffelEntry("Nur Fünfer", false, 5));//Done
+        model.add(new KniffelEntry("Nur Sechser", false, 6));//Done
+        model.add(new KniffelEntry("Pasch 3", false, -1));
+        model.add(new KniffelEntry("Pasch 4", false, -2));
+        model.add(new KniffelEntry("Full House", false, 25));//Done
+        model.add(new KniffelEntry("Kleine Straße", false, 30));//Done
+        model.add(new KniffelEntry("Große Straße", false, 40));//Done
         model.add(new KniffelEntry("Kniffel", false, 50));
 
         diceModel.add(new MyInteger(rand.nextInt(6), false));
@@ -46,9 +50,8 @@ public class KniffelGUI extends javax.swing.JFrame {
         diceModel.add(new MyInteger(rand.nextInt(6), false));
         diceModel.add(new MyInteger(rand.nextInt(6), false));
         diceModel.add(new MyInteger(rand.nextInt(6), false));
-
-        jtDice.setModel(diceModel);
-        jtDice.setDefaultRenderer(Object.class, diceRend);
+        
+        jtDice.setModel(new DefaultTableModel());
         jtDice.setRowHeight(120);
     }
 
@@ -130,12 +133,20 @@ public class KniffelGUI extends javax.swing.JFrame {
         jLabel4.setText("Gesamt-Punkte");
 
         tfUpperSum.setEditable(false);
+        tfUpperSum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfUpperSum.setText("0");
 
         tfBonus.setEditable(false);
+        tfBonus.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfBonus.setText("0");
 
         tfLowerSum.setEditable(false);
+        tfLowerSum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfLowerSum.setText("0");
 
         tfSum.setEditable(false);
+        tfSum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfSum.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -205,54 +216,54 @@ public class KniffelGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtCardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtCardMouseClicked
-        if (rolled) {
-            model.selectCb(jtCard.getSelectedRow());
-            idx = jtCard.getSelectedRow();
+        if(count == 3){ //You can only choose if you rolled 3 times.
+            idx = jtCard.getSelectedRow(); //Gets selected index
+            try {
+                model.selectCb(idx); //Selects cb
+                model.getEntry(idx).calcPoints(diceRend.getValues()); //Calculates the points, so the renderer can show it.
+                tfUpperSum.setText(model.getEntry(idx).getUpperPoints()+"");
+                tfLowerSum.setText(model.getEntry(idx).getLowerPoints()+"");
+                tfBonus.setText(model.getEntry(idx).getBonus()+"");
+                tfSum.setText(model.getEntry(idx).getUpperPoints()+model.getEntry(idx).getLowerPoints()
+                +model.getEntry(idx).getBonus()+"");
+                jtDice.setModel(new DefaultTableModel()); //Removes the model, so the dices aren't shown any more
+            for(MyInteger mi : diceModel.getDice()){ //Removes all the selections (red background)
+                mi.setSelected(false);
+            }
+            count = 0; //0, so you can roll one more time
             
-            for(KniffelEntry e : model.getEntries()){
-            if(e.isSelected()){
-                amount2 ++;
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-        }
-            if(amount2 == amount + 1){
-                count = 0;
-            }else{
-                JOptionPane.showMessageDialog(null, "Bitte wähle eine weiter Box aus!");
-            }
-        }
-        else if(count == 3){
-            rolled = true;
-            count = 0;
         }
     }//GEN-LAST:event_jtCardMouseClicked
 
     private void jtDiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDiceMouseClicked
-        diceModel.changeState(jtDice.getSelectedColumn());
+        diceModel.changeState(jtDice.getSelectedColumn()); //Selects dice
     }//GEN-LAST:event_jtDiceMouseClicked
 
     private void btRollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRollActionPerformed
-        if (count < 3) {
-            for (int i = 4; i >= 0; i--) {
-                if (!diceModel.getDice().get(i).isSelected()) {
-                    diceModel.delete(i);
-                    diceModel.getDice().add(i, new MyInteger(rand.nextInt(6), false));
+        jtDice .setModel(diceModel);
+        jtDice.setDefaultRenderer(Object.class, diceRend);
+        if (count < 3) { //You can only roll 3 times, then you have to select your value
+            for (int i = 4; i >= 0; i--) { //Creates random numbers to roll the dices again
+                if (!diceModel.getDice().get(i).isSelected()) { //But only for those which aren't selected
+                    diceModel.delete(i); //Removes the old one
+                    diceModel.getDice().add(i, new MyInteger(rand.nextInt(6), false)); //And creates a random one between 1 and 6 
                 }
             }
             diceModel.fireTableDataChanged();
             count ++;
+            if(count == 3){
+                for(MyInteger mi : diceModel.getDice()){ //Removes all the selections (red background)
+                mi.setSelected(false);
+            }
+            }
         } else {
-            rolled = false;
             JOptionPane.showMessageDialog(null, "Du hast schon 3 Mal gewürfelt!");
         }
-        if(count == 3){
-            rolled = true;
-        }
-        amount = 0;
-        for(KniffelEntry e : model.getEntries()){
-            if(e.isSelected()){
-                amount ++;
-            }
-        }
+//        System.out.println(diceRend.getValues()[0]+""+diceRend.getValues()[1]
+//        +""+diceRend.getValues()[2]+""+diceRend.getValues()[3]+""+diceRend.getValues()[4]); //TODO
     }//GEN-LAST:event_btRollActionPerformed
 
     public static void main(String args[]) {
