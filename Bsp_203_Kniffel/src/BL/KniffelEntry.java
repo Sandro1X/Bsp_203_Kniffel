@@ -101,7 +101,8 @@ public class KniffelEntry {
             }//end
             if (points == 30) {
                 if (whitelist[0] == 1 || whitelist[0] == 2 || whitelist[0] == 3) {
-                    if (whitelist[1] == whitelist[0] + 1 && whitelist[2] == whitelist[1] + 1 && whitelist[3] == whitelist[2] + 1) {
+                    if ((whitelist[1] == whitelist[0] + 1 && whitelist[2] == whitelist[1] + 1 && whitelist[3] == whitelist[2] + 1)||(
+                            whitelist[1] + 1 == whitelist[2])&&whitelist[2]+1==whitelist[3]&&whitelist[3]+1==whitelist[4]) {
                         calcPoints = 30;
                         lowerPoints += calcPoints;
                         return calcPoints;
@@ -144,10 +145,11 @@ public class KniffelEntry {
             lowerPoints += calcPoints;
             return calcPoints;
         }
-        if(points == -1 || points == -2){
-            System.out.println("Before: ");
+        if(points == -1 || points == -2){//Wenn man 3er pasch hat kann man trzdem 4er pasch auswähln
+           
             for(int i = 0; i < val.length; i++){
-                System.out.print(val[i]+" ");
+//                System.out.println(val[i]+" ");
+                calcPoints += val[i];
             }
             int end = values.length;
             for (int i = 0; i < end; i++) { //Removes duplicates
@@ -166,18 +168,19 @@ public class KniffelEntry {
             for (int i = 0; i < end; i++) {
                 whitelist[i] = values[i];
             }//end
-            if(whitelist.length <= 2){
-                System.out.println("test");
-                System.out.println("After: ");
-                for(int i = 0; i < val.length; i++){
-                System.out.print(val[i]+" ");
-            }
-                for(int i = 0; i < val.length; i++){
-                    calcPoints += val[i];
-                }
-                lowerPoints += calcPoints;
+            
+            if(whitelist.length > 3){
+                calcPoints = 0;
                 return calcPoints;
             }
+            if(points == -2 && whitelist.length > 2){
+                calcPoints = 0;
+            }
+            if(points == -1 && whitelist.length > 3){
+                calcPoints = 0;
+            }
+            lowerPoints += calcPoints;
+            return calcPoints;
         }
 
         calcPoints = anz * points;
