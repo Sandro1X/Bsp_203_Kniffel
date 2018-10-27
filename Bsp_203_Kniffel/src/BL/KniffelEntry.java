@@ -16,7 +16,7 @@ public class KniffelEntry {
         this.points = points;
     }
 
-    public int calcPoints(int[] values) throws Exception {
+    public int calcPoints(int[] values) {
         int val[] = new int[5];
         val = values;
         
@@ -100,7 +100,11 @@ public class KniffelEntry {
                 whitelist[i] = values[i];
             }//end
             if (points == 30) {
-                if (whitelist[0] == 1 || whitelist[0] == 2 || whitelist[0] == 3) {
+                
+                    
+                try{
+                    if (whitelist[0] == 1 || whitelist[0] == 2 || whitelist[0] == 3) {
+                    
                     if ((whitelist[1] == whitelist[0] + 1 && whitelist[2] == whitelist[1] + 1 && whitelist[3] == whitelist[2] + 1)||(
                             whitelist[1] + 1 == whitelist[2])&&whitelist[2]+1==whitelist[3]&&whitelist[3]+1==whitelist[4]) {
                         calcPoints = 30;
@@ -114,10 +118,16 @@ public class KniffelEntry {
                     calcPoints = 0;
                     return calcPoints;
                 }
+                }catch(Exception e){
+                    calcPoints = 0;
+                    return calcPoints;
+                }
+                
             }
 
             if (points == 40) {
-                if (whitelist[0] == 1 || whitelist[0] == 2) {
+                try{
+                    if (whitelist[0] == 1 || whitelist[0] == 2) {
                     if (whitelist[1] == whitelist[0] + 1 && whitelist[2] == whitelist[1] + 1 && whitelist[3] == whitelist[2] + 1
                             && whitelist[4] == whitelist[3] + 1) {
                         calcPoints = 40;
@@ -131,6 +141,11 @@ public class KniffelEntry {
                     calcPoints = 0;
                     return calcPoints;
                 }
+                }catch(Exception e){
+                    calcPoints = 0;
+                    return calcPoints;
+                }
+                
             }
         }
         if (points == 50) {

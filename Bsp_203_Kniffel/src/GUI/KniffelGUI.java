@@ -23,6 +23,7 @@ public class KniffelGUI extends javax.swing.JFrame {
     private int count = 0;
     private Random rand = new Random();
     private int idx;
+    private int countCB = 0;
 
     public KniffelGUI() {
         initComponents();
@@ -227,6 +228,7 @@ public class KniffelGUI extends javax.swing.JFrame {
                 tfSum.setText(model.getEntry(idx).getUpperPoints()+model.getEntry(idx).getLowerPoints()
                 +model.getEntry(idx).getBonus()+"");
                 jtDice.setModel(new DefaultTableModel()); //Removes the model, so the dices aren't shown any more
+                countCB ++;
             for(MyInteger mi : diceModel.getDice()){ //Removes all the selections (red background)
                 mi.setSelected(false);
             }
@@ -235,6 +237,11 @@ public class KniffelGUI extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
+        }
+        if(countCB == 12){
+            int points = model.getEntry(0).getUpperPoints()+model.getEntry(0).getLowerPoints()+model.getEntry(0).getBonus();
+            JOptionPane.showMessageDialog(null, "Du hast das Spiel mit "+points+" Punkten abgeschlossen!");
+            this.dispose();
         }
     }//GEN-LAST:event_jtCardMouseClicked
 

@@ -25,6 +25,9 @@ public class KniffelTableRenderer implements TableCellRenderer{
                 cb.setSelected(e.isSelected());
                 return cb;
             case 2: label.setText(e.getCalcPoints()+"");
+            if(e.getCalcPoints() == 0){
+                label.setBackground(Color.red);
+            }
         }
         return label;
     }

@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>D:\Sandro\Kaindorf\3CHIF\POS\Bsp_203_Kniffel\Bsp_203_Kniffel\dist\Bsp_203_Kniffel.jar</jar>
-  <outfile>C:\Users\baumg\Desktop\Kniffel.exe</outfile>
+  <outfile>D:\Sandro\Kaindorf\3CHIF\POS\Bsp_203_Kniffel\Kniffel.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
